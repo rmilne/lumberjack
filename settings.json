@@ -1,0 +1,8 @@
+{
+    "log_path": "test.log",
+    "log_splits": {
+        "output_example/path.log": ["pattern1", "patternN"],
+        "output_example/silly.log": ["silly walk"]
+    },
+    "rest": 5
+}
