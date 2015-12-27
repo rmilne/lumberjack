@@ -21,7 +21,7 @@ class Splitter():
     def match(self, line):
         for pattern in self.patterns:
             if pattern in line:
-                log.debug('Splitter.match:"%s" ==> "%s"' % (pattern, self.path))
+                log.debug('match:"%s" ==> "%s"' % (pattern, self.path))
                 self.write(line)
                 return True
         return False
