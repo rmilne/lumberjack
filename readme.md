@@ -18,9 +18,9 @@ python lumberjack.py settings.json
 
 Config
 ------
-log_path: the log file to follow
-log_splits: the files to put log lines into if they match any one of the list of patterns (simple substring match)
-rest: time to rest if at the end of the log file
+log_path: the log file to follow   
+log_splits: the files to put log lines into if they match any one of the list of patterns (simple substring match)   
+rest: time to rest if at the end of the log file   
 
     {
         "log_path": "test.log",
