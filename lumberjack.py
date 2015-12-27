@@ -20,7 +20,7 @@ class Splitter():
 
     def match(self, line):
         for pattern in self.patterns:
-            if pattern in line:
+            if pattern in line.decode('utf-8', 'ignore'):
                 log.debug('match:"%s" ==> "%s"' % (pattern, self.path))
                 self.write(line)
                 return True

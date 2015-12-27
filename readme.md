@@ -1,8 +1,8 @@
 Lumberjack
 ==========
 
-I'm a lumberjack, and I'm okay.
-I sleep all night and I work all day.
+	I'm a lumberjack, and I'm okay.
+	I sleep all night and I work all day.
 
 Lumberjack follows a log file and splits it into other log files if they match
 patterns in the configuration file.
