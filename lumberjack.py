@@ -9,11 +9,8 @@ import time
 
 from pygtail import Pygtail
 
-
 logging.basicConfig(filename='im_a_lumberjack.log',
         format='%(asctime)s %(levelname)s %(message)s', level=logging.DEBUG)
-#logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
-#        level=logging.DEBUG)
 log = logging.getLogger()
 
 class Splitter():
@@ -37,9 +34,10 @@ class Splitter():
                 if e.errno == 17:
                     pass
                 else:
-                    raise
+                    log.warn('makedirs exception: %s' % e)
+                    pass
         with open(self.path, 'a') as f:
-            f.write('%s\n' % line)
+            f.write('%s\n' % line.rstrip())
 
 
 class FileFollower():
@@ -49,13 +47,30 @@ class FileFollower():
     '''
     def __init__(self, path):
         self.path = path
-        self.pygtail = Pygtail(path)
+        self.pygtail = None
+        self.last_inode = 0
 
     def next(self):
         line = ''
+        curr_inode = 0
+        if self.pygtail is None:
+            try:
+                # remove last offset file if the log file is different
+                # PygTail's inode detection doesn't work in certain cases
+                curr_inode = os.stat(self.path).st_ino
+                if self.last_inode != curr_inode:
+                    os.unlink(self.path + '.offset')
+                    self.last_inode = curr_inode
+                    log.debug('deleted offset file, inode difference')
+            except Exception as e:
+                log.info('inode checking failed (not terminal): %s' % e)
+            self.pygtail = Pygtail(self.path)
         try:
             line = self.pygtail.next()
         except StopIteration as si:
+            # Need to get a new instance of pygtail after this incase the inode
+            # has changed
+            self.pygtail = None
             return False
         return line
 
